@@ -11,5 +11,4 @@ hook.hook = function (req, res) {
     return;
 };
 
-
 module.exports = hook;
