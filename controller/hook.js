@@ -4,4 +4,5 @@ var hook = {
 
 hook.hook = function (req, res) {
     console.log(req.body);
+    
 };
