@@ -13,6 +13,7 @@ hook.hook = function (req, res) {
         var shell = 'cd '+hook.href+' & git pull & pm2 restart '+hook.pm2name;
     }else {
         //shiyixia
+        var shell = 'cd '+hook.href+' & git pull ';
     }
     var childHook = child.exec(shell,function (error, stdout, stderr) {
         console.log('stdout: ' + stdout);
