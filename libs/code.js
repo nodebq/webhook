@@ -24,6 +24,10 @@ var code = {
         code: 1005,
         message: "不支持xhr对象"
     },
+    'childProcessError':{
+        code:1006,
+        message:"子进程命令运行出错"
+    },
     'loginError': {
         code: 2001,
         message: "并未获取授权"
@@ -60,6 +64,7 @@ var code = {
         code:2009,
         message:'表单数据重复'
     }
+
 
 };
 
