@@ -12,7 +12,7 @@ hook.hook = function (req, res) {
     if(hook.language=='node'){
         var shell = 'cd '+hook.href+' & git pull & pm2 restart '+hook.pm2name;
     }else {
-
+        //shiyixia
     }
     var childHook = child.exec(shell,function (error, stdout, stderr) {
         console.log('stdout: ' + stdout);
@@ -20,7 +20,7 @@ hook.hook = function (req, res) {
         if (error !== null) {
             console.log('exec error: ' + error);
         }
-        
+
     })
 };
 
