@@ -8,8 +8,8 @@ var hook = {
 };
 
 hook.hook = function (req, res) {
-    console.log(req.body);
-    if (!req.body.hook_name) {
+    console.log(req.body.hook);
+    if (!req.body.hook) {
         if (req.body.repository.name) {
             var hook = config.project[req.body.repository.name];
             if (hook.method == 'github') {
@@ -38,8 +38,10 @@ hook.hook = function (req, res) {
         }
 
     } else {
-        if(config.project[req.body.hook_name]){
-            var hook = config.project[req.body.hook_name];
+        // JSON.parse(req.body.hook);
+        // console.log(req.body.hook);
+        if(config.project[req.body.hook.repository]){
+            var hook = config.project[req.body.hook.repository.name];
             if (hook.method == 'oschina' && hook.password == req.body.password) {
 
                 if (hook.language == 'node') {
@@ -55,12 +57,12 @@ hook.hook = function (req, res) {
                     }
                 })
             }else {
-                console.log('paramsError');
+                console.log('paramsError1');
                 res.end(fyscu.out(code.paramError));
                 return;
             }
         }else{
-            console.log('paramsError');
+            console.log('paramsError2');
             res.end(fyscu.out(code.paramError));
             return;
         }
