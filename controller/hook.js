@@ -4,43 +4,67 @@ var config = require('../config.js');
 var child = require('child_process');
 
 var hook = {
-    name:"web hook"
+    name: "webhook"
 };
 
 hook.hook = function (req, res) {
-    if(req.body.repository.name){
-        console.log(req.body);
-
-        if(hook.method=='github'){
+    console.log(req.body);
+    if (!req.body.hook_name) {
+        if (req.body.repository.name) {
             var hook = config.project[req.body.repository.name];
-            if(hook.language=='node'){
-                var shell = 'cd '+hook.href+' & git pull & pm2 restart '+hook.pm2name;
-            }else {
-                //shiyixia
-                var shell = 'cd '+hook.href+' & git pull ';
+            if (hook.method == 'github') {
+                if (hook.language == 'node') {
+                    var shell = 'cd ' + hook.href + ' & git pull & pm2 restart ' + hook.pm2name;
+                } else {
+                    //shiyixia
+                    var shell = 'cd ' + hook.href + ' & git pull ';
+                }
+                var childHook = child.exec(shell, function (error, stdout, stderr) {
+                    console.log('stdout: ' + stdout);
+                    console.log('stderr: ' + stderr);
+                    if (error !== null) {
+                        console.log('exec error: ' + error);
+                    }
+                })
+            } else {
+                console.log('paramsError');
+                res.end(fyscu.out(code.paramError));
+                return;
             }
-        }else if(hook.method=='oschina'&&hook.password==req.body.password){
-            var hook = config.project[req.body.hook_name];
-            if(hook.language=='node'){
-                var shell = 'cd '+hook.href+' & git pull & pm2 restart '+hook.pm2name;
-            }else{
-                var shell = 'cd '+hook.href+' & git pull ';
-            }
-        }else {
-            console.log("I don't know which platform or your password id is wrong");
-            res.end(fyscu.out(code.success));
+        } else {
+            console.log('paramsError');
+            res.end(fyscu.out(code.paramError));
             return;
         }
-        var childHook = child.exec(shell,function (error, stdout, stderr) {
-            console.log('stdout: ' + stdout);
-            console.log('stderr: ' + stderr);
-            if (error !== null) {
-                console.log('exec error: ' + error);
+
+    } else {
+        if(config.project[req.body.hook_name]){
+            var hook = config.project[req.body.hook_name];
+            if (hook.method == 'oschina' && hook.password == req.body.password) {
+
+                if (hook.language == 'node') {
+                    var shell = 'cd ' + hook.href + ' & git pull & pm2 restart ' + hook.pm2name;
+                } else {
+                    var shell = 'cd ' + hook.href + ' & git pull ';
+                }
+                var childHook = child.exec(shell, function (error, stdout, stderr) {
+                    console.log('stdout: ' + stdout);
+                    console.log('stderr: ' + stderr);
+                    if (error !== null) {
+                        console.log('exec error: ' + error);
+                    }
+                })
+            }else {
+                console.log('paramsError');
+                res.end(fyscu.out(code.paramError));
+                return;
             }
-        })
-    }else {
-        console.log(fyscu.out(code.paramError));
-        return;
+        }else{
+            console.log('paramsError');
+            res.end(fyscu.out(code.paramError));
+            return;
+        }
+
     }
 
 

@@ -3,7 +3,7 @@ var router = express.Router();
 var hook = require('../controller/hook.js');
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
+router.post('/', function (req, res, next) {
     // res.render('index', {title: 'Express'});
     res.header("Access-Control-Allow-Origin", "*");
     hook.hook(req, res);
