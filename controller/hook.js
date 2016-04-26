@@ -14,17 +14,24 @@ hook.hook = function (req, res) {
             // console.log(req.body.repository.name);
             var hook = config.project[req.body.repository.name];
             if (hook.method == 'github') {
-                if (hook.language == 'node') {
-                    var shell = 'git pull & pm2 restart ' + hook.pm2name;
-                } else {
-                    //shiyixia
-                    var shell = 'git pull ';
-                }
+                var shell = 'git pull ';
+
                 var childHook = child.exec(shell, {
                     cwd:hook.href
                 },function (error, stdout, stderr) {
                     console.log('stdout: ' + stdout);
                     console.log('stderr: ' + stderr);
+                    if (hook.language == 'node'){
+                        var childHook2 = child.exec('pm2 restart '+hook.pm2name,function () {
+                            console.log('stdout: ' + stdout);
+                            console.log('stderr: ' + stderr);
+                            if (error !== null) {
+                                console.log('exec error: ' + error);
+                                console.log(fyscu.out(code.childProcessError));
+                                return;
+                            }
+                        });
+                    }
                     if (error !== null) {
                         console.log('exec error: ' + error);
                         console.log(fyscu.out(code.childProcessError));
@@ -52,16 +59,24 @@ hook.hook = function (req, res) {
             var hook = config.project[req.body.hook.push_data.repository.name];
             if (hook.method == 'oschina' && hook.password == req.body.hook.password) {
 
-                if (hook.language == 'node') {
-                    var shell ='git pull & pm2 restart ' + hook.pm2name;
-                } else {
-                    var shell = 'git pull ';
-                }
+                var shell = 'git pull ';
+
                 var childHook = child.exec(shell, {
                     cwd:hook.href
             },function (error, stdout, stderr) {
                     console.log('stdout: ' + stdout);
                     console.log('stderr: ' + stderr);
+                    if (hook.language == 'node'){
+                        var childHook2 = child.exec('pm2 restart '+hook.pm2name,function () {
+                            console.log('stdout: ' + stdout);
+                            console.log('stderr: ' + stderr);
+                            if (error !== null) {
+                                console.log('exec error: ' + error);
+                                console.log(fyscu.out(code.childProcessError));
+                                return;
+                            }
+                        });
+                    }
                     if (error !== null) {
                         console.log('exec error: ' + error);
                         console.log(fyscu.out(code.childProcessError));
