@@ -70,6 +70,7 @@ hook.hook = function (req, res) {
                         var childHook2 = child.exec('pm2 restart ' + hook.pm2name, function () {
                             console.log('stdout: ' + stdout);
                             console.log('stderr: ' + stderr);
+                            
                             if (error !== null) {
                                 console.log('exec error: ' + error);
                                 console.log(fyscu.out(code.childProcessError));
