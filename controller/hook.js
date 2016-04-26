@@ -15,12 +15,14 @@ hook.hook = function (req, res) {
             var hook = config.project[req.body.repository.name];
             if (hook.method == 'github') {
                 if (hook.language == 'node') {
-                    var shell = 'cd ' + hook.href + ' & git pull & pm2 restart ' + hook.pm2name;
+                    var shell = 'git pull & pm2 restart ' + hook.pm2name;
                 } else {
                     //shiyixia
-                    var shell = 'cd ' + hook.href + ' & git pull ';
+                    var shell = 'git pull ';
                 }
-                var childHook = child.exec(shell, function (error, stdout, stderr) {
+                var childHook = child.exec(shell, {
+                    cwd:hook.href
+                },function (error, stdout, stderr) {
                     console.log('stdout: ' + stdout);
                     console.log('stderr: ' + stderr);
                     if (error !== null) {
@@ -51,11 +53,13 @@ hook.hook = function (req, res) {
             if (hook.method == 'oschina' && hook.password == req.body.hook.password) {
 
                 if (hook.language == 'node') {
-                    var shell = 'cd ' + hook.href + ' & git pull & pm2 restart ' + hook.pm2name;
+                    var shell ='git pull & pm2 restart ' + hook.pm2name;
                 } else {
-                    var shell = 'cd ' + hook.href + ' & git pull ';
+                    var shell = 'git pull ';
                 }
-                var childHook = child.exec(shell, function (error, stdout, stderr) {
+                var childHook = child.exec(shell, {
+                    cwd:hook.href
+            },function (error, stdout, stderr) {
                     console.log('stdout: ' + stdout);
                     console.log('stderr: ' + stderr);
                     if (error !== null) {
