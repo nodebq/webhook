@@ -8,9 +8,13 @@ var hook = {
 };
 
 hook.hook = function (req, res) {
-    console.log(req.body.hook);
     // console.log(req.body.hook);
-    if (!req.body.password) {
+
+    // console.log(gitosc);
+
+    // console.log(req.body.hook);
+    if (!req.body.hook) {
+        // console.log(req.body.hook);
         if (req.body.repository.name) {
             // console.log(req.body.repository.name);
             var hook = config.project[req.body.repository.name];
@@ -54,14 +58,15 @@ hook.hook = function (req, res) {
         }
 
     } else {
+        var gitosc = JSON.parse(req.body.hook);
         // JSON.parse(req.body.hook);
         // console.log(config.project[req.body.hook.push_data.repository]);
-        if (req.body.push_data.repository) {
-            var hook = config.project[req.body.push_data.repository.name];
-            console.log(hook.method);
-            console.log(hook.password);
-            console.log(req.body.password);
-            if (hook.method == 'oschina' && hook.password == req.body.password) {
+        if (gitosc.push_data.repository) {
+            var hook = config.project[gitosc.push_data.repository.name];
+            // console.log(hook.method);
+            // console.log(hook.password);
+            // console.log(req.body.password);
+            if (hook.method == 'oschina' && hook.password == gitosc.password) {
 
                 var shell = 'git pull ';
 
