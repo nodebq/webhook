@@ -8,7 +8,7 @@ var hook = {
 };
 
 hook.hook = function (req, res) {
-    console.log(req.body);
+    console.log(req.body.hook);
     // console.log(req.body.hook);
     if (!req.body.password) {
         if (req.body.repository.name) {
