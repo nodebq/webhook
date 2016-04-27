@@ -11,6 +11,7 @@ router.post('/', function (req, res, next) {
 
 router.post('/hook', function (req, res) {
     res.header("Access-Control-Allow-Origin", "*");
+    console.log(req.body);
     hook.hook(req, res);
 });
 
